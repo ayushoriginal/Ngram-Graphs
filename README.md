@@ -1,6 +1,6 @@
 # Ngram-Graphs
 
-[Click here to see my powerpoint presentation on this topic](http://www.slideshare.net/ayushoriginal/2016-m7-w2)
+[Click here to see my introductory powerpoint presentation on this topic](http://www.slideshare.net/ayushoriginal/2016-m7-w2)
 
 [![Gitter](https://badges.gitter.im/Ngram-Graphs/Lobby.svg)](https://gitter.im/Ngram-Graphs/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
