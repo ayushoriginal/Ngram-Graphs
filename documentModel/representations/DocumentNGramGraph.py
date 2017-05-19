@@ -7,28 +7,9 @@
  *
 """
 
-"""
-package gr.demokritos.iit.jinsect.documentModel.representations;
-import gr.demokritos.iit.jinsect.structs.IMergeable;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Vector;
-import gr.demokritos.iit.jinsect.events.NormalizerListener;
-import gr.demokritos.iit.jinsect.events.WordEvaluatorListener;
-import gr.demokritos.iit.jinsect.structs.EdgeCachedLocator;
-import gr.demokritos.iit.jinsect.structs.UniqueVertexGraph;
-import gr.demokritos.iit.jinsect.utils;
-import gr.demokritos.iit.jinsect.events.TextPreprocessorListener;
-import java.util.Arrays;
-import java.util.List;
-import salvo.jesus.graph.*;
-"""
-
+import networkx as nx
+#import pygraphviz as pgv
+import matplotlib.pyplot as plt
 
 """
  *  Represents the graph of a document, with vertices n-grams of the document and edges the number
@@ -37,87 +18,134 @@ import salvo.jesus.graph.*;
  * @author ysig
 """
 
-import networkx as nx
-
 class DocumentNGramGraph:
     #n for the n-graph
     __n = 2 
-    #consider not having characters but obgect lists
+    #consider not having characters but lists of objects
     __Data = []
+    #data size build for reuse of len(data)
     __dSize = 0
+    #stores the ngram
+    __ngram = []
+    #store the ngram graph
     __Graph = nx.Graph()
-    __ngrams_graph_d = {}
-    __size = 0
+    #window for graph construction
     __Dwin = 2
-    
-    Normalizer = None;
-    WordEvaluator = None;
-    TextPreprocessor = None;
-    
-    __NGramGraphArray =[];
-    __eclLocator = None;
-    
+    # a printing flag determining if the printing result will be stored on document or
+    # be displayed on string
+    __GPrintVerbose = True
+
     # initialization
-    def __init__(self, Data = [], n=2, Dwin=2):
+    def __init__(self, n=2, Dwin=2, Data = [], GPrintVerbose = True):
         # data must be "listable"
-        self.__Data = list(Data)
-        self.__dSize = len(Data)
         self.__Dwin = abs(int(Dwin))
         self.__n = abs(int(n))
-        if(not (*self.__Data is [])):
-            self.__Graph = buildGraph(Data)
+        self.setData(Data)
+        self.__GPrintVerbose = GPrintVerbose
+        if(not (self.__Data == [])):
+            self.buildGraph()
             
     # we will now define @method buildGraph
     # which takes a data input
     # segments ngrams
-    # and adds the to graph form
-    def buildGraph(self,Data):
-        ng = ngram(Data)
+    # and creates ngrams based on a given window
+    # !notice: at this developmental stage the weighting method
+    # may not be correct
+    def buildGraph(self,verbose = False, d=[]):
+        self.setData(d)
+        Data = self.__Data
+        ng = self.build_ngram()
         s = len(ng)
-        win = __Dwin
-        __Graph = nx.Graph()
-        ed = ng[0:min(win,s)-1]
-        for e in ed:
-            addEdgeInc(Data[0],e)
+        win = self.__Dwin
+        self.__Graph = nx.Graph()
         o = max(-1,s-win-1)
         if(o>=0):
-            window = ng[0:win-2]
-            i = win-1
-            for gram in ng[0:o]:
-                window.append(ng[i])
+            window = ng[1:win]
+            i = win
+            for gram in ng[0:o+1]:
+                window.append(ng[i][:])
                 for w in window:
-                    addEdgeInc(gram,w)
-                window.pop(ng[0])
+                    self.addEdgeInc(gram,w)
+                window.pop(0)
                 i+=1
-            
-                
+            if verbose:
+                self.GraphDraw(self.__GPrintVerbose)
+        return self.__Graph
+       
         
-        
-    def addEdgeInc(self,A,B):
-        if (A,B) in __Graph.edges():
-            data = __Graph.get_edge_data(A, B, key='edge')
-            __Graph.add_edge(A, B, weight=data['weight']+1)
+    # add's an edge if it's non existent
+    # if it is increments it's weight
+    # !notice: reiweighting technique may be false 
+    # at this developmental stage
+    def addEdgeInc(self,a,b):
+        #A = repr(a)#str(a)
+        #B = repr(b)#str(b)
+        #merging can also be done in other ways
+        #add an extra class variable
+        A = ''.join(a)
+        B = ''.join(b)
+        if (A,B) in self.__Graph.edges():
+            edata = self.__Graph.get_edge_data(A, B)
+            #print "updating edge between (",A,B,") to weigh",(edata['weight']+1)
+            self.__Graph.add_edge(A, B, weight=edata['weight']+1)
         else:
-            __Graph.add_edge(A, B, key='edge', weight=1)
-
+            #print "adding edge between (",A,B,")"
+            self.__Graph.add_edge(A, B, key='edge', weight=1)
+            
     
     # creates ngram's of window based on @param n
-    def ngram(self,Data):
-        l = Data[0:(min(n,__dSize)-1)]
+    def build_ngram(self,d = []):
+        self.setData(d)
+        Data = self.__Data
+        l = Data[0:min(self.__n,self.__dSize)]
         q = []
-        q.append(l)
-        if(n<__dSize):
-            for d in Data[(min(n,__dSize)-1):end]:
-                l.pop(l[0])
+        q.append(l[:])
+        if(self.__n<self.__dSize):
+            for d in Data[min(self.__n,self.__dSize):]:
+                l.pop(0)
                 l.append(d)
-                q.append(l)
+                q.append(l[:])
+        self.__ngram = q
         return q
-            
+     
+    # draws a graph using math plot lib
+    def GraphDraw(self, verbose = True, lf = True, ns = 1000, wf= True):
+        pos = nx.spring_layout(self.__Graph, scale=1)
+        nx.draw(self.__Graph,pos = pos,node_size=ns,with_labels = lf, node_color = 'm')
+        if wf:
+            weight_labels = nx.get_edge_attributes(self.__Graph,'weight')
+            nx.draw_networkx_edge_labels(self.__Graph,pos = pos,edge_labels = weight_labels)
+        if verbose:
+            plt.show()
+        else:
+            plt.savefig('g.png')
+    
+    # set functions for structure's protected fields
+    def setData(self,Data):
+        if not(Data == []):
+            self.__Data = list(Data)
+            self.__dSize = len(self.__Data)
+     
     def setN(self,n):
         self.__n=n
 
+    def setDwin(self,win):
+        self.__Dwin = win
+    
+    # get functions for structures protected fields
     def getMin(self):
         return self.__MinSize
+    
+    def getngram(self):
+        return self.__ngram
+    
+    def getGraph(self):
+        return self.__Graph
 
-a = DocumentNGramGraph(4)
-print a.getMin()
+#test script
+
+#1. construct a 2-gram graph of window_size = 2
+#   from the word "abcdef"
+ngg = DocumentNGramGraph(2,2,"abcdef")
+# print it!
+ngg.GraphDraw()            
