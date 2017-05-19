@@ -1,0 +1,17 @@
+PROJECT IS NOW IN: STUDY VERSION
+
+TRANSCRIPTION OF BASIC JAVA CLASSES TO PYTHON.
+
+
+Dependencies:
+- Install pip
+- sudo apt-get install python-pip
+
+
+- Install python graph library "Networkx"
+- pip install networkx
+
+
+- Install MathPlot lib
+- sudo python -m pip install matplotlib 
+- sudo apt-get install python-tk
