@@ -8,9 +8,9 @@
 """
 
 import networkx as nx
-#import pygraphviz as pgv
+import pygraphviz as pgv
 import matplotlib.pyplot as plt
-
+from networkx.drawing.nx_agraph import graphviz_layout
 """
  *  Represents the graph of a document, with vertices n-grams of the document and edges the number
  * of the n-grams' co-occurences within a given window.
@@ -110,8 +110,10 @@ class DocumentNGramGraph:
      
     # draws a graph using math plot lib
     def GraphDraw(self, verbose = True, lf = True, ns = 1000, wf= True):
-        pos = nx.spring_layout(self.__Graph, scale=1)
-        nx.draw(self.__Graph,pos = pos,node_size=ns,with_labels = lf, node_color = 'm')
+        pos = graphviz_layout(self.__Graph)
+        #pos = sring_layout(self.__Graph, scale=1)
+        #nx.draw(self.__Graph,pos = pos,node_size=ns,with_labels = lf, node_color = 'm')
+        nx.draw(self.__Graph, pos=graphviz_layout(self.__Graph), node_size=ns, cmap=plt.cm.Blues, node_color=range(len(self.__Graph)), prog='dot', with_labels = lf)
         if wf:
             weight_labels = nx.get_edge_attributes(self.__Graph,'weight')
             nx.draw_networkx_edge_labels(self.__Graph,pos = pos,edge_labels = weight_labels)
@@ -119,6 +121,8 @@ class DocumentNGramGraph:
             plt.show()
         else:
             plt.savefig('g.png')
+            #or to dot
+            #nx.drawing.nx_pydot.write_dot(self.__Graph,'g.dot')
     
     # set functions for structure's protected fields
     def setData(self,Data):
@@ -147,5 +151,7 @@ class DocumentNGramGraph:
 #1. construct a 2-gram graph of window_size = 2
 #   from the word "abcdef"
 ngg = DocumentNGramGraph(2,2,"abcdef")
+#ngg = DocumentNGramGraph(3,2,"Do you Like this summary?")
 # print it!
-ngg.GraphDraw()            
+#print ngg.getngram()
+ngg.GraphDraw()
