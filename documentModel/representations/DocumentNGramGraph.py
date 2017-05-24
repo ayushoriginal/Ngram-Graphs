@@ -35,6 +35,9 @@ class DocumentNGramGraph:
     # be displayed on string
     _GPrintVerbose = True
 
+    # the graph stores it's maximum and minimum weigh
+    _maxW = 0
+    _minW = float("inf")
     # initialization
     def __init__(self, n=3, Dwin=2, Data = [], GPrintVerbose = True):
         # data must be "listable"
@@ -43,6 +46,8 @@ class DocumentNGramGraph:
         self.setData(Data)
         self._GPrintVerbose = GPrintVerbose
         if(not (self._Data == [])):
+            _maxW = 0
+            _minW = float("inf")
             self.buildGraph()
             
     # we will now define @method buildGraph
@@ -103,10 +108,14 @@ class DocumentNGramGraph:
         if (A,B) in self._Graph.edges():
             edata = self._Graph.get_edge_data(A, B)
             #print "updating edge between (",A,B,") to weigh",(edata['weight']+1)
-            self._Graph.add_edge(A, B, weight=edata['weight']+w)
+            r = weight=edata['weight']+w
         else:
             #print "adding edge between (",A,B,")"
-            self._Graph.add_edge(A, B, key='edge', weight=w)
+            r = w
+        # update/add edge weight
+        self._Graph.add_edge(A, B, key='edge', weight=r)
+        self._maxW = max(self._maxW,r)
+        self._minW = min(self._minW,r)
             
     
     # creates ngram's of window based on @param n
@@ -161,7 +170,12 @@ class DocumentNGramGraph:
     
     def getGraph(self):
         return self._Graph
-
+    
+    def maxW(self):
+        return self._maxW
+    
+    def minW(self):
+        return self._minW
 #test script
 
 #1. construct a 2-gram graph of window_size = 2
