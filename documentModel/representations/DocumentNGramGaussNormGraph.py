@@ -44,7 +44,7 @@ class DocumentNGramGaussNormGraph(DocumentNGramGraph):
             i = o
             # first build the full window
             for gram in ng[0:s-1]:
-                j = 0
+                j = 1
                 for w in window:
                     # weigh in the correct way
                     self.addEdgeInc(gram,w,format(self.pdf(j),'.2f'))
