@@ -5,7 +5,6 @@
  
    Created on May 24, 2017, 3:56 PM
 """
-from ..representations.DocumentNGramGraph import DocumentNGramGraph
 
 """
  An n-gram graph similarity class
@@ -15,16 +14,28 @@ from ..representations.DocumentNGramGraph import DocumentNGramGraph
  
  @author ysig
 """
+
+# a general similarity class
+# that acts as a pseudo-interface
+# defining the basic class methods
 class getSimilarity:
     def __init__(self):
         pass
     
+    # given two ngram graphs
+    # returns the given similarity as double
     def getSimilarityDouble(self,ngg1,ngg2):
         return 0.0
     
+    # given two ngram graphs
+    # returns some midway extracted similarity components
+    # as a dictionary between of sting keys (similarity-name)
+    # and double values
     def getSimilarityComponents(self,ngg1,ngg2):
         return {"SS" : 0, "VS" : 0, "NVS" : 0}
-        
+    
+    # from the similarity components extracts
+    # what she wants for the given class
     def getSimilarityFromComponents(self,Dict):
         return 0.0
 
@@ -33,12 +44,20 @@ class getSimilaritySS(getSimilarity):
     def __init__(self):
         pass
     
+    # given two ngram graphs
+    # returns the SS-similarity as double
     def getSimilarityDouble(self,ngg1,ngg2):
         return (min(ngg1.minW(),ngg2.minW())*1.0)/max(ngg1.maxW(),ngg2.maxW())
-        
+    
+    # given two ngram graphs
+    # returns the SS-similarity
+    # components on a dictionary
     def getSimilarityComponents(self,ngg1,ngg2):
         return {"SS" : (min(ngg1.minW(),ngg2.minW())/max(ngg1.maxW(),ngg2.maxW()))}
-        
+    
+    # given similarity components
+    # extracts the SS measure
+    # if existent and returns it (as double)
     def getSimilarityFromComponents(self,Dict):
         if (Dict.has_key("SS")):
             return Dict["SS"]
@@ -51,7 +70,9 @@ class getSimilarityVS(getSimilarity):
     
     def __init__(self):
         pass
-    
+
+    # given two ngram graphs
+    # returns the VS-similarity as double    
     def getSimilarityDouble(self,ngg1,ngg2):
         s = 0.0
         g1 = ngg1.getGraph()
@@ -62,10 +83,16 @@ class getSimilarityVS(getSimilarity):
                 dp = g2.get_edge_data(u, v)
                 s+= min(d['weight'],dp['weight'])/max(d['weight'],dp['weight'])
         return s/max(g1.number_of_edges(),g2.number_of_edges())
-        
+
+    # given two ngram graphs
+    # returns the VS-similarity
+    # components on a dictionary        
     def getSimilarityComponents(self,ngg1,ngg2):
         return {"VS" : self.getSimilarityDouble(ngg1,ngg2)}
-        
+    
+    # given similarity components
+    # extracts the SS measure
+    # if existent and returns it (as double)
     def getSimilarityFromComponents(self,Dict):
         if (Dict.has_key("VS")):
             return Dict["VS"]
@@ -77,16 +104,26 @@ class getSimilarityNVS(getSimilarity):
     def __init__(self):
         pass
     
+    
+    # given two ngram graphs
+    # returns the NVS-similarity as double    
     def getSimilarityDouble(self,ngg1,ngg2):
         SS = getSimilaritySS()
         VS = getSimilarityVS()
         return (VS.getSimilarityDouble(ngg1,ngg2)*1.0)/SS.getSimilarityDouble(ngg1,ngg2)
     
+    # given two ngram graphs
+    # returns the NVS-similarity
+    # components e.g. SS and VS
+    # on a dictionary
     def getSimilarityComponents(self,ngg1,ngg2):
         SS = getSimilaritySS()
         VS = getSimilarityVS()
         return {"SS" : SS.getSimilarityDouble(ngg1,ngg2), "VS" : VS.getSimilarityDouble(ngg1,ngg2)}
     
+    # given a dictionary containing
+    # SS similarity and VS similarity
+    # extracts NVS if SS is not 0
     def getSimilarityFromComponents(self,Dict):
         if((Dict.has_key("SS") and Dict.has_key("VS")) and (str(Dict["SS"]) != "0.0")):
             return (Dict["VS"]*1.0)/Dict["SS"]
