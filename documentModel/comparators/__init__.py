@@ -1,2 +1,2 @@
 from getSimilarity import *
-from binaryOperators import *
+from Operator import *
