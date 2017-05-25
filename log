@@ -1,0 +1,233 @@
+python test.py
+1.0   0.714285714286
+0.714285714286
+2
+Starting Threads: [<Thread(Thread-1, stopped 140179604002560)>]
+1
+<documentModel.representations.DocumentNGramGraph.DocumentNGramGraph instance at 0x7f7e1e88fa70>
+Final Graph is:
+/home/ysigl/.local/lib/python2.7/site-packages/networkx/drawing/nx_pylab.py:126: MatplotlibDeprecationWarning: pyplot.hold is deprecated.
+    Future behavior will be consistent with the long-time default:
+    plot commands add elements without first clearing the
+    Axes and/or Figure.
+  b = plt.ishold()
+/home/ysigl/.local/lib/python2.7/site-packages/networkx/drawing/nx_pylab.py:138: MatplotlibDeprecationWarning: pyplot.hold is deprecated.
+    Future behavior will be consistent with the long-time default:
+    plot commands add elements without first clearing the
+    Axes and/or Figure.
+  plt.hold(b)
+/usr/local/lib/python2.7/dist-packages/matplotlib/__init__.py:917: UserWarning: axes.hold is deprecated. Please remove it from your matplotlibrc and/or style files.
+  warnings.warn(self.msg_depr_set % key)
+/usr/local/lib/python2.7/dist-packages/matplotlib/rcsetup.py:152: UserWarning: axes.hold is deprecated, will be removed in 3.0
+  warnings.warn("axes.hold is deprecated, will be removed in 3.0")
+<documentModel.representations.DocumentNGramGraph.DocumentNGramGraph instance at 0x7f7e1e88fa70>
+None
+ ysigl@ggianna-ncsr-gram  ~/Desktop/PyINSECT   master ●  python test.py
+1.0   0.714285714286
+0.714285714286
+> <string>(1)<module>()
+(Pdb) step
+--Call--
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(25)Union()
+-> def Union(self,*args, **kwargs):
+(Pdb) step
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(26)Union()
+-> kwargs["method"] = self._Union2
+(Pdb) step
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(27)Union()
+-> return self._comm(*args,**kwargs)
+(Pdb) step
+--Call--
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(42)_comm()
+-> def _comm(self,*args, **kwargs):
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(43)_comm()
+-> if(kwargs.has_key("dc")):
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(46)_comm()
+-> dc = True
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(47)_comm()
+-> nargs = len(args)
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(48)_comm()
+-> print nargs
+(Pdb) next
+2
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(49)_comm()
+-> if (nargs==0):
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(51)_comm()
+-> elif (nargs==1):
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(61)_comm()
+-> l = []
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(63)_comm()
+-> for count, thing in enumerate(args):
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(64)_comm()
+-> if((count%2)==1):
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(67)_comm()
+-> prev = thing
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(63)_comm()
+-> for count, thing in enumerate(args):
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(64)_comm()
+-> if((count%2)==1):
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(65)_comm()
+-> l.append((prev,thing))
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(63)_comm()
+-> for count, thing in enumerate(args):
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(68)_comm()
+-> i=0
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(69)_comm()
+-> fargs = {}
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(71)_comm()
+-> lock = threading.Lock()
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(72)_comm()
+-> threads = []
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(74)_comm()
+-> for (a,b) in l:
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(75)_comm()
+-> thr = threading.Thread(target=kwargs["method"], args=(a,b,fargs,str(i), lock, dc))
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(76)_comm()
+-> threads.append(thr)
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(77)_comm()
+-> i+=1
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(74)_comm()
+-> for (a,b) in l:
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(80)_comm()
+-> [t.start() for t in threads]
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(80)_comm()
+-> [t.start() for t in threads]
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(82)_comm()
+-> print "Starting Threads:", threads
+(Pdb) next
+Starting Threads: [<Thread(Thread-1, stopped 140290592134912)>]
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(84)_comm()
+-> [t.join() for t in threads]
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(84)_comm()
+-> [t.join() for t in threads]
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(90)_comm()
+-> if((nargs%2)!=0):
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(94)_comm()
+-> q = fargs.values()
+(Pdb) next
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(95)_comm()
+-> self.Union(*(fargs.values()), dc = False, method = kwargs["method"])
+(Pdb) step
+--Call--
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(25)Union()
+-> def Union(self,*args, **kwargs):
+(Pdb) step
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(26)Union()
+-> kwargs["method"] = self._Union2
+(Pdb) step
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(27)Union()
+-> return self._comm(*args,**kwargs)
+(Pdb) step
+--Call--
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(42)_comm()
+-> def _comm(self,*args, **kwargs):
+(Pdb) step
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(43)_comm()
+-> if(kwargs.has_key("dc")):
+(Pdb) step
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(44)_comm()
+-> dc = kwargs["dc"]
+(Pdb) step
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(47)_comm()
+-> nargs = len(args)
+(Pdb) step
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(48)_comm()
+-> print nargs
+(Pdb) step
+1
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(49)_comm()
+-> if (nargs==0):
+(Pdb) step
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(51)_comm()
+-> elif (nargs==1):
+(Pdb) step
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(52)_comm()
+-> if(dc):
+(Pdb) step
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(55)_comm()
+-> res = args[0]
+(Pdb) step
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(56)_comm()
+-> print res
+(Pdb) step
+<documentModel.representations.DocumentNGramGraph.DocumentNGramGraph instance at 0x7f97f351ecb0>
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(57)_comm()
+-> print "Final Graph is:"
+(Pdb) step
+Final Graph is:
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(58)_comm()
+-> res.GraphDraw()
+(Pdb) next
+/home/ysigl/.local/lib/python2.7/site-packages/networkx/drawing/nx_pylab.py:126: MatplotlibDeprecationWarning: pyplot.hold is deprecated.
+    Future behavior will be consistent with the long-time default:
+    plot commands add elements without first clearing the
+    Axes and/or Figure.
+  b = plt.ishold()
+/home/ysigl/.local/lib/python2.7/site-packages/networkx/drawing/nx_pylab.py:138: MatplotlibDeprecationWarning: pyplot.hold is deprecated.
+    Future behavior will be consistent with the long-time default:
+    plot commands add elements without first clearing the
+    Axes and/or Figure.
+  plt.hold(b)
+/usr/local/lib/python2.7/dist-packages/matplotlib/__init__.py:917: UserWarning: axes.hold is deprecated. Please remove it from your matplotlibrc and/or style files.
+  warnings.warn(self.msg_depr_set % key)
+/usr/local/lib/python2.7/dist-packages/matplotlib/rcsetup.py:152: UserWarning: axes.hold is deprecated, will be removed in 3.0
+  warnings.warn("axes.hold is deprecated, will be removed in 3.0")
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(59)_comm()
+-> print res
+(Pdb) step
+<documentModel.representations.DocumentNGramGraph.DocumentNGramGraph instance at 0x7f97f351ecb0>
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(60)_comm()
+-> return res
+(Pdb) step
+--Return--
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(60)_comm()-><documentMode...x7f97f351ecb0>
+-> return res
+(Pdb) step
+--Return--
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(27)Union()-><documentMode...x7f97f351ecb0>
+-> return self._comm(*args,**kwargs)
+(Pdb) step
+--Return--
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(95)_comm()->None
+-> self.Union(*(fargs.values()), dc = False, method = kwargs["method"])
+(Pdb) step
+--Return--
+> /home/ysigl/Desktop/PyINSECT/documentModel/comparators/binaryOperators.py(27)Union()->None
+-> return self._comm(*args,**kwargs)
+(Pdb) step
+--Return--
+> <string>(1)<module>()->None
+(Pdb) step
+> /usr/lib/python2.7/bdb.py(404)run()
+-> self.quitting = 1
+(Pdb) step
+None
+
