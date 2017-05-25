@@ -11,6 +11,7 @@ import networkx as nx
 import pygraphviz as pgv
 import matplotlib.pyplot as plt
 from networkx.drawing.nx_agraph import graphviz_layout
+
 """
  *  Represents the graph of a document, with vertices n-grams of the document and edges the number
  * of the n-grams' co-occurences within a given window.
@@ -113,10 +114,7 @@ class DocumentNGramGraph:
             #print "adding edge between (",A,B,")"
             r = w
         # update/add edge weight
-        self._Graph.add_edge(A, B, key='edge', weight=r)
-        self._maxW = max(self._maxW,r)
-        self._minW = min(self._minW,r)
-            
+        self.setEdge(A,B,r)
     
     # creates ngram's of window based on @param n
     def build_ngram(self,d = []):
@@ -154,7 +152,15 @@ class DocumentNGramGraph:
         if not(Data == []):
             self._Data = list(Data)
             self._dSize = len(self._Data)
-     
+    
+    
+    def setEdge(self,a,b,w=1):
+        self._Graph.add_edge(a, b, key='edge', weight=w)
+        self._maxW = max(self._maxW,w)
+        self._minW = min(self._minW,w)
+        
+    
+    
     def setN(self,n):
         self._n=n
 
