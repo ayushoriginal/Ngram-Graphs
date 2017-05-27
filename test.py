@@ -11,17 +11,13 @@ sc = gs.getSimilarityComponents(ngg1,ngg2)
 print sc["SS"]," ",sc["VS"]
 print gs.getSimilarityFromComponents(sc)
 
-#bOp = binaryOperators()
+uni = Union(l1=0.5, l2 = 0.5, commutative=True,distributional=True)
+op = LtoRNary(uni)
 
-#uniG = pdb.run('bOp.Union(ngg1,ngg2)')
-
-#uniG = bOp.Union(ngg1,ngg2)
-#interG = bOp.Intersect(ngg1,ngg2)
-#deltaG = bOp.delta(ngg1,ngg2)
-#invintG = bOp.inverse_intersection(ngg1,ngg2)
-
-#print uniG
-#print interG
-#print deltaG
-#print invintG
-#zg.GraphDraw()
+# strange error still here
+# maybe dependent with 
+# garbage collecting
+# functions arguments
+# as fields on ar's
+#op.apply(ngg1,ngg2)
+clo.apply(ngg1).GraphDraw()

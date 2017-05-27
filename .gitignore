@@ -1,2 +1,4 @@
 README_deprec
+.gitignore
+.cvsignore
 *.pyc

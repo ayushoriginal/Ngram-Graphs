@@ -1,8 +1,9 @@
 from getSimilarity import *
 import threading
 import copy
+import warnings
 
-class Operator:
+class Operator(object):
     def __init__(self):
         pass
     
@@ -12,14 +13,14 @@ class UnaryOperator(Operator):
         pass
     def apply(self,*args):
         l = len(args)
-        if(l!=2):
+        if(l!=1):
             raise ValueError('Unary operators accept exactly one argument')
     
 
 class Clone(UnaryOperator):
-    def apply(self,*a):
-        super(Intersect, self).apply(args)
-        return copy.deepcopy(a[0])
+    def apply(self,*args):
+        super(self.__class__, self).apply(args)
+        return copy.deepcopy(args[0])
         
 class NaryOperator(Operator):
     def __init__(self):
@@ -28,12 +29,12 @@ class NaryOperator(Operator):
         pass
 
 class BinaryOperator(NaryOperator):
-    self._commutative = False
-    self._distributional = False
+    _commutative = False
+    _distributional = False
     def apply(self,*args):
         l = len(args)
         if(l!=2):
-            raise ValueError('Binary operators accept exactly two arguments')
+            raise ValueError('Binary operators accept exactly two arguments!\n'+str(l)+' given.')
         
 class Union(BinaryOperator):
     def __init__(self,l1=0.5, l2 = 0.5, commutative=True,distributional=False):
@@ -43,11 +44,16 @@ class Union(BinaryOperator):
         self._lf2 = l2
     
     def setLF(self,lf1=0.5,lf2=0.5):
-        self._lf1 = l1
-        self._lf2 = l2
+        self._lf1 = lf1
+        self._lf2 = lf2
         
-    def apply(self,g1,g2,dc=True):
-        super(Union, self).apply(args)
+    def apply(self,*args,**kwargs):
+        super(self.__class__, self).apply(*args)
+        if(kwargs.has_key("dc")):
+            dc = kwargs["dc"]
+        else:
+            dc = True
+        g1,g2 = args
         a = g1
         b = g2
         if(self._commutative):
@@ -79,8 +85,13 @@ class Intersect(BinaryOperator):
         self._commutative = commutative
         self._distributional = distributional
     
-    def apply(self,g1,g2,dc=True):
-        super(Intersect, self).apply(args)
+    def apply(self,*args,**kwargs):
+        super(self.__class__, self).apply(*args)
+        if(kwargs.has_key("dc")):
+            dc = kwargs["dc"]
+        else:
+            dc = True
+        g1,g2 = args
         a = g1
         b = g2
         if(self._commutative):
@@ -106,11 +117,18 @@ class Intersect(BinaryOperator):
             else:
                 # delte the non common
                 r.delEdge(u,v)
+		r.deleteUnreachedNodes()
         return r
 
 class delta(BinaryOperator):
-    def apply(self,a,b,dc):
-        super(delta, self).apply(args)
+    def apply(self,*args,**kwargs):
+        super(self.__class__, self).apply(*args)
+        if(kwargs.has_key("dc")):
+            dc = kwargs["dc"]
+        else:
+            dc = True
+        a,b = args
+	
         if (dc):
             r = copy.deepcopy(a)
         else:
@@ -130,8 +148,16 @@ class delta(BinaryOperator):
         return r
 
 class inverse_intersection(BinaryOperator):
-    def apply(self,a,b,dc):
-        super(inverse_intersection, self).apply(args)
+    def apply(self,*args,**kwargs):
+
+        super(self.__class__, self).apply(*args)
+
+        if(kwargs.has_key("dc")):
+            dc = kwargs["dc"]
+        else:
+            dc = True
+        a,b = args
+
         if (dc):
             r = copy.deepcopy(a)
         else:
@@ -143,7 +169,7 @@ class inverse_intersection(BinaryOperator):
         rg = r.getGraph()
         re = rg.edges()
         
-    
+    	# calculates inverse intersection
         for (u,v,w) in gg2ed:
             if((u,v) in re):
                 r.delEdge(u,v)
@@ -154,25 +180,27 @@ class inverse_intersection(BinaryOperator):
 
 class Similarity(BinaryOperator):
     
-    def __init__(Similarity_Type):
-        switch(Similarity_Type):
-            case "SS":
-                self._gS = getSimilaritySS()
-            case "VS":
-                self._gS = getSimilarityVS()
-            case "NVS":
-                self._gS = getSimilarityNVS()
+    def __init__(self,Similarity_Type="SS"):
+        if (Similarity_Type=="SS"):
+            self._gS = getSimilaritySS()
+        elif (Similarity_Type=="VS"):
+            self._gS = getSimilarityVS()
+        elif (Similarity_Type=="NVS"):
+            self._gS = getSimilarityNVS()
+        else:
+            raise ValueError('No such Similarity Type')
                 
     def apply(self,*args):
-        super(Similarity, self).apply(args)
-        return self._gS.getSimilarityDouble(args)
+        super(self.__class__, self).apply(*args)
+        return self._gS.getSimilarityDouble(*args)
     
 class Update(NaryOperator):
-    def __init__(self,*vargs):
-        super(Update,self).__init__(args)
+    def __init__(self,*args):
+        super(self.__class__,self).__init__(*args)
         self._Op = Union()
+        self._undex = 0
     
-    def apply(self,*args,dc = True):
+    def apply(self,*args,**kwargs):
         # Start from left
         # while I have more items to the right
             # Get next item
@@ -198,8 +226,8 @@ class Update(NaryOperator):
             # Apply on the first two
             self._undex += 1
             lF = (self._undex/self._undex+1)
-            Op.setLF(lF,1-lF)
-            z = self.Op.apply(args[0],args[1],dc)
+            self._Op.setLF(lF,1-lF)
+            z = self._Op.apply(args[0],args[1],dc=dc)
             q = list(args[2:])
             # non_comm with the same method on the rest
             self.apply(*([z] + q),dc=False)
@@ -212,12 +240,11 @@ class ParallelNary(NaryOperator):
         if(q<0):
             raise ValueError('Nthreads must be positive!')
         try:
-            if(not Op._distributable):
-                return LtoRNary(op)
+            if(not op._distributable):
+                warnings.warn("Given operator is not defined as distributable.\nResult may be false.", UserWarning)
         except AttributeError:
-            return LtoRNary(op)
-        
-    def apply(*args,dc=True):
+				warnings.warn("Given operator is not defined as distributable.\nResult may be false.", UserWarning)        
+    def apply(self,*args,**kwargs):
         if(kwargs.has_key("dc")):
             dc = kwargs["dc"]
         else:
@@ -230,8 +257,10 @@ class ParallelNary(NaryOperator):
             if(dc):
                 return copy.deepcopy(args[0])
             else:
-                self._comres = args[0]
-                return 
+                # !!! Strange error on return ...
+                # if printed here, result is regular
+                # returned object is of none type
+                return args[0]
         else:
             l = []
             # arrange tuples
@@ -254,7 +283,7 @@ class ParallelNary(NaryOperator):
             i=0
             if(self._nthreads>0):
                 for (a,b) in l:
-                    thr = threading.Thread(target=self._executor, args=(self._Op.apply,a,b,dc,fargs,str(i),lock)
+                    thr = threading.Thread(target=self._executor, args=(self._Op.apply,a,b,dc,fargs,str(i),lock))
                     threads.append(thr) 
                     i+=1
                     if(i%nthreads==0):
@@ -273,7 +302,7 @@ class ParallelNary(NaryOperator):
             # infinity threads means no boundary
             elif(self._nthreads==0):
                 for (a,b) in l:
-                    thr = threading.Thread(target=self._single_executor, args=(self._Op.apply,a,b,dc,fargs,str(i),lock)
+                    thr = threading.Thread(target=self._single_executor, args=(self._Op.apply,a,b,dc,fargs,str(i),lock))
                     threads.append(thr) 
                     i+=1
                 [t.start() for t in threads]
@@ -290,9 +319,9 @@ class ParallelNary(NaryOperator):
             else:
                 self.apply(*(fargs.values()), dc = False)
         
-    def _single_executor(f,a,b,dc,fargs,dst,lock):
+    def _single_executor(self,f,a,b,dc,fargs,dst,lock):
         ## calculate operators apply on a,b
-        r = f.apply(a,b,dc)
+        r = f(a,b,dc=dc)
         ## lock
         
         lock.acquire()
@@ -305,7 +334,7 @@ class LtoRNary(NaryOperator):
     def __init__(self,op):
         self._Op = op
     
-    def apply(self, *args):
+    def apply(self, *args,**kwargs):
         # Start from left
         # while I have more items to the right
             # Get next item
@@ -323,13 +352,13 @@ class LtoRNary(NaryOperator):
             if(dc):
                 return copy.deepcopy(args[0])
             else:
-                res = args[0]
-                print "Final Graph is:" 
-                res.GraphDraw()
-                return res
+                # !!! Strange error on return ...
+                # if printed here, result is regular
+                # returned object is of none type
+                return args[0]
         else:
             # Apply on the first two
-            z = self.Op.apply(args[0],args[1],dc)
+            z = self._Op.apply(args[0],args[1],dc=dc)
             q = list(args[2:])
             # non_comm with the same method on the rest
             self.apply(*([z] + q),dc=False)
