@@ -147,24 +147,28 @@ class DocumentNGramGraph:
             #or to dot
             #nx.drawing.nx_pydot.write_dot(self._Graph,'g.dot')
     
-    # set functions for structure's protected fields
+    ## set functions for structure's protected fields
+
     def setData(self,Data):
         if not(Data == []):
             self._Data = list(Data)
             self._dSize = len(self._Data)
     
-    
+    # sets an edges weight
     def setEdge(self,a,b,w=1):
         self._Graph.add_edge(a, b, key='edge', weight=w)
         self._maxW = max(self._maxW,w)
         self._minW = min(self._minW,w)
-    
-    def deleteUnreachedNodes(self):
-        self._Graph.remove_nodes_from(nx.isolates(self._Graph))
-        
+	
+	# deletes
     def delEdge(self,u,v):
         self._Graph.remove_edge(u,v)
     
+
+	# trims the graph by removing unreached nodes
+    def deleteUnreachedNodes(self):
+        self._Graph.remove_nodes_from(nx.isolates(self._Graph))
+        
     def setN(self,n):
         self._n=n
 
@@ -174,7 +178,7 @@ class DocumentNGramGraph:
     def size(self):
         return self._Graph.size()
     
-    # get functions for structures protected fields
+    ## get functions for structures protected fields
     def getMin(self):
         return self._MinSize
     
