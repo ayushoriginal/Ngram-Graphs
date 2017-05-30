@@ -14,14 +14,18 @@
  
  @author ysig
 """
+from Operator import *
+
 
 # a general similarity class
 # that acts as a pseudo-interface
 # defining the basic class methods
-class getSimilarity:
-    def __init__(self):
-        pass
+class Similarity(BinaryOperator):
     
+    def __init__(self, commutative = True, distributional = False):
+       self._commutative = commutative
+       self._distributional = distributional
+        
     # given two ngram graphs
     # returns the given similarity as double
     def getSimilarityDouble(self,ngg1,ngg2):
@@ -38,11 +42,12 @@ class getSimilarity:
     # what she wants for the given class
     def getSimilarityFromComponents(self,Dict):
         return 0.0
+	
+    def apply(self,*args,**kwargs):
+      super(Similarity, self).apply(*args)
+      return self.getSimilarityDouble(*args)
 
-class getSimilaritySS(getSimilarity):
-    
-    def __init__(self):
-        pass
+class SimilaritySS(Similarity):
     
     # given two ngram graphs
     # returns the SS-similarity as double
@@ -66,11 +71,8 @@ class getSimilaritySS(getSimilarity):
     
 
 
-class getSimilarityVS(getSimilarity):
+class SimilarityVS(Similarity):
     
-    def __init__(self):
-        pass
-
     # given two ngram graphs
     # returns the VS-similarity as double    
     def getSimilarityDouble(self,ngg1,ngg2):
@@ -99,17 +101,13 @@ class getSimilarityVS(getSimilarity):
         else: 
             return 0.0
     
-class getSimilarityNVS(getSimilarity):
-    
-    def __init__(self):
-        pass
-    
-    
+class SimilarityNVS(Similarity):
+     
     # given two ngram graphs
     # returns the NVS-similarity as double    
     def getSimilarityDouble(self,ngg1,ngg2):
-        SS = getSimilaritySS()
-        VS = getSimilarityVS()
+        SS = SimilaritySS()
+        VS = SimilarityVS()
         return (VS.getSimilarityDouble(ngg1,ngg2)*1.0)/SS.getSimilarityDouble(ngg1,ngg2)
     
     # given two ngram graphs
@@ -117,8 +115,8 @@ class getSimilarityNVS(getSimilarity):
     # components e.g. SS and VS
     # on a dictionary
     def getSimilarityComponents(self,ngg1,ngg2):
-        SS = getSimilaritySS()
-        VS = getSimilarityVS()
+        SS = SimilaritySS()
+        VS = SimilarityVS()
         return {"SS" : SS.getSimilarityDouble(ngg1,ngg2), "VS" : VS.getSimilarityDouble(ngg1,ngg2)}
     
     # given a dictionary containing
