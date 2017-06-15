@@ -3,7 +3,7 @@ PROJECT IS NOW IN: STUDY VERSION
 TRANSCRIPTION OF BASIC JAVA CLASSES TO PYTHON.
 
 
-Dependencies:
+NgramGraph Dependencies:
 - Install pip
 - sudo apt-get install python-pip
 
@@ -25,3 +25,12 @@ Dependencies:
 - Install python graph viz library "pygraphviz"
 - sudo apt-get install graphviz libgraphviz-dev pkg-config
 - sudo pip install pygraphviz --install-option="--include-path=/usr/include/graphviz" --install-option="--library-path=/usr/lib/graphviz/"
+
+
+Bio I/O Dependencies:
+- BioPython
+- sudo pip install biopython
+
+SVM/classifier Dependencies:
+sudo pip install scipy
+sudo pip install sklearn
