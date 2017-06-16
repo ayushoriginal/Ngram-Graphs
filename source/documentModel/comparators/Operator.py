@@ -427,9 +427,11 @@ class ParallelNary(NaryOperator):
             #
             if((nargs%2)!=0):
                 fargs[str(len(l))]=args[-1]
-                self.apply(*(fargs.values()),dc = False)
+                return self.apply(*(fargs.values()),dc = False)
             else:
-                self.apply(*(fargs.values()), dc = False)
+                return self.apply(*(fargs.values()), dc = False)
+            
+            
     # a single executor for parallel Nary
     def _single_executor(self,f,a,b,dc,fargs,dst,lock):
         ## calculate operators apply - given by f - on a,b
@@ -483,5 +485,5 @@ class LtoRNary(NaryOperator):
             q = list(args[2:])
             # recursively apply the result to the rest
 			# now dc is false
-            self.apply(*([z] + q),dc=False)
+            return self.apply(*([z] + q),dc=False)
             
