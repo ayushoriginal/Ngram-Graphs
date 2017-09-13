@@ -76,14 +76,14 @@ class DocumentNGramGraph:
             window = [ng[0]]
             # append the first full window
             # while adding the needed edges
-            for gram in ng[1:o]:
+            for gram in ng[1:o + 1]:
                 for w in window:
                     self.addEdgeInc(gram,w)
                 window.append(gram)
                 
             # with full window span till
             # the end.
-            for gram in ng[o:]:
+            for gram in ng[o + 1:]:
                 for w in window:
                     self.addEdgeInc(gram,w)
                 window.pop(0)
@@ -193,6 +193,9 @@ class DocumentNGramGraph:
     
     def minW(self):
         return self._minW
+
+    def number_of_edges(self):
+        return self._Graph.number_of_nodes();
 #test script
 
 #1. construct a 2-gram graph of window_size = 2

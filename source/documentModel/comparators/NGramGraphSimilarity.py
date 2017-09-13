@@ -52,13 +52,19 @@ class SimilaritySS(Similarity):
     # given two ngram graphs
     # returns the SS-similarity as double
     def getSimilarityDouble(self,ngg1,ngg2):
-        return (min(ngg1.minW(),ngg2.minW())*1.0)/max(ngg1.maxW(),ngg2.maxW())
+        # WRONG
+        # return (min(ngg1.minW(),ngg2.minW())*1.0)/max(ngg1.maxW(),ngg2.maxW())
+        y = max(ngg1.number_of_edges(),ngg2.number_of_edges())
+        if y == 0: # If both graphs are zero sized
+            return 0.0 # return zero
+
+        return (min(ngg1.number_of_edges(),ngg2.number_of_edges())*1.0) / max(ngg1.number_of_edges(),ngg2.number_of_edges())
     
     # given two ngram graphs
     # returns the SS-similarity
     # components on a dictionary
     def getSimilarityComponents(self,ngg1,ngg2):
-        return {"SS" : (min(ngg1.minW(),ngg2.minW())/max(ngg1.maxW(),ngg2.maxW()))}
+        return {"SS" : (self.getSimilarityDouble(ngg1, ngg2))}
     
     # given similarity components
     # extracts the SS measure
