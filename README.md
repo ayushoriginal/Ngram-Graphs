@@ -1,13 +1,35 @@
-# Ngram-Graphs
 
-[Click here to see my introductory powerpoint presentation on this topic](http://www.slideshare.net/ayushoriginal/2016-m7-w2)
+# N-grams-graphs and their applications in NLP 
+
+ ## Report
+![0](http://i.imgur.com/mHGeaqR.jpg)
+![1](http://i.imgur.com/pcLYLJw.jpg)
+![2](http://i.imgur.com/40rOSnC.jpg)
+![3](http://i.imgur.com/82OkzDg.jpg)
+![4](http://i.imgur.com/annHVI5.jpg)
+![5](http://i.imgur.com/2JB4FNV.jpg)
+![6](http://i.imgur.com/b5Wzux8.jpg)
+![7](http://i.imgur.com/7dWFI2V.jpg)
+![8](http://i.imgur.com/WbWsiNJ.jpg)
+![9](http://i.imgur.com/KrQEXwF.jpg)
+![10](http://i.imgur.com/Kc9twoM.jpg)
+![11](http://i.imgur.com/qjX937m.jpg)
+![12](http://i.imgur.com/T3Cn4KG.jpg)
+![13](http://i.imgur.com/0b9GSnu.jpg)
+![14](http://i.imgur.com/HDa6HHk.jpg)
+![15](http://i.imgur.com/wUDIaFh.jpg)
+![16](http://i.imgur.com/haxVrls.jpg)
+![17](http://i.imgur.com/qsdSIMG.jpg)
+
 
 [![Gitter](https://badges.gitter.im/Ngram-Graphs/Lobby.svg)](https://gitter.im/Ngram-Graphs/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-# JInsect
-The JINSECT toolkit is a Java-based toolkit and library that supports and demonstrates the use of n-gram graphs within Natural Language Processing applications, ranging from summarization and summary evaluation to text classiﬁcation and indexing. This repository has parts of the collaborative work that Ayush Pareek did with Dr. George Giannakopoulos to build this tool.
+![18](https://i.imgur.com/uVJ6A5e.jpg)
+[Click here to see a small ppt on the potential use of n gram graphs for text classification](http://www.slideshare.net/ayushoriginal/2016-m7-w2)
 
-## Main concepts
+
+# JInsect
+The JINSECT toolkit is a Java-based toolkit and library that supports and demonstrates the use of n-gram graphs within Natural Language Processing applications, ranging from summarization and summary evaluation to text classiﬁcation and indexing. This repository has parts of the collaborative work that Ayush Pareek did with Dr. George Giannakopoulos on the upcoming 2nd version of the tool. It also contains a rudimentary version of the toolkit in Python with functional N-gram Graph operations and AutoSumENG, MeMoG, NPower algorithms for multilingual summary evaluation. 
 
 ## Code Snippets
 * Create an n-gram graph from a string:
@@ -162,8 +184,8 @@ import gr.demokritos.iit.jinsect.storage.INSECTFileDB;
 
 
 ## This version of the library has implementations of the following features-
-- The n-gram graphs (NGG) representations. See [thesis, Chapter 3](http://www.iit.demokritos.gr/~ggianna/thesis.pdf) for more info.
-- The NGG operators update/merge, intersect, allNotIn, etc. See [thesis, Chapter 4](http://www.iit.demokritos.gr/~ggianna/thesis.pdf) for more info.
+- The n-gram graphs (NGG) representations.
+- The NGG operators update/merge, intersect, allNotIn, etc. 
 - The AutoSummENG summary evaluation family of methods.
 - INSECTDB storage abstraction for object serialization.
 - A very rich (and useful!) utils class which one *must* consult before trying to work with the graphs.
@@ -172,36 +194,8 @@ import gr.demokritos.iit.jinsect.storage.INSECTFileDB;
 ...and many many side-projects that are hidden including a chunker based on something similar to a language model, a semantic index that builds upon string subsumption to determine meaning and many others. Most of these are, sadly, not documented or published.
 
 This library version:
+* Has increased modularity compared to the previous version i.e. JInsect 1.0
 * supports efficient multi-threaded execution
 * contains examples of application for classification
 * contains examples of application for clustering
 * contains command-line application for language-neutral summarization
-
-**TODO:** 
-* Clean problematic classes that have dependencies from Web services.
-
-
-## License
-JInsect is under [LGPL license](https://www.gnu.org/licenses/lgpl.html).
-
-
-![0](http://i.imgur.com/mHGeaqR.jpg)
-![1](http://i.imgur.com/pcLYLJw.jpg)
-![2](http://i.imgur.com/40rOSnC.jpg)
-![3](http://i.imgur.com/82OkzDg.jpg)
-![4](http://i.imgur.com/annHVI5.jpg)
-![5](http://i.imgur.com/2JB4FNV.jpg)
-![6](http://i.imgur.com/b5Wzux8.jpg)
-![7](http://i.imgur.com/7dWFI2V.jpg)
-![8](http://i.imgur.com/WbWsiNJ.jpg)
-![9](http://i.imgur.com/KrQEXwF.jpg)
-![10](http://i.imgur.com/Kc9twoM.jpg)
-![11](http://i.imgur.com/qjX937m.jpg)
-![12](http://i.imgur.com/T3Cn4KG.jpg)
-![13](http://i.imgur.com/0b9GSnu.jpg)
-![14](http://i.imgur.com/HDa6HHk.jpg)
-![15](http://i.imgur.com/wUDIaFh.jpg)
-![16](http://i.imgur.com/haxVrls.jpg)
-![17](http://i.imgur.com/qsdSIMG.jpg)
-
-![18](https://i.imgur.com/uVJ6A5e.jpg)
